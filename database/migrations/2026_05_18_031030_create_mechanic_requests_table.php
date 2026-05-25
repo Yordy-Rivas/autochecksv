@@ -19,17 +19,30 @@ return new class extends Migration
 
     $table->foreignId('mechanic_id')->constrained()->onDelete('cascade');
 
+    $table->string('customer_name');
+
+    $table->string('phone');
+
     $table->string('vehicle');
 
-    $table->date('appointment_date');
+    $table->string('vin');
 
     $table->text('problem_description');
 
-    $table->enum('status', ['pending', 'accepted', 'completed'])
-        ->default('pending');
+    $table->date('appointment_date');
+
+    $table->string('appointment_time');
+
+    $table->string('address');
+
+    $table->string('service_type');
+
+    $table->string('status')->default('Pendiente');
 
     $table->timestamps();
+
 });
+
     }
 
     /**

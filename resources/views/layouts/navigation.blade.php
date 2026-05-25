@@ -14,6 +14,16 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    @if(auth()->user()->is_admin)
+
+                <a href="/admin/dashboard"
+                    class="text-red-500 font-bold">
+
+                    Admin Panel
+
+                </a>
+
+@endif
                     </x-nav-link>
                 </div>
             </div>

@@ -26,9 +26,16 @@
 
             <div class="mt-4">
 
-                <a href="#"
+                <a href="/mechanic-request/{{ $mechanic->id }}"
                    class="bg-blue-600 text-white px-4 py-2 rounded">
                     Solicitar Revisión
+                </a>
+
+                <a href="https://wa.me/50377777777"
+                    target="_blank"
+                    class="bg-green-500 text-white px-4 py-2 rounded ml-2">
+
+                    WhatsApp
                 </a>
 
             </div>

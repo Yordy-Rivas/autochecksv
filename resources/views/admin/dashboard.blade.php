@@ -2,84 +2,157 @@
 
 @section('content')
 
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="p-10">
 
-    <div class="bg-gray-900 text-white p-6 rounded shadow">
+    <h1 class="text-5xl font-bold mb-10">
 
-        <h2 class="text-2xl font-bold mb-6">
-            Admin Panel
-        </h2>
+        Admin Dashboard 🚀
 
-        <div class="space-y-4">
+    </h1>
 
-            <a href="/admin/dashboard" class="block">
-                Dashboard
-            </a>
+    <!-- CARDS -->
 
-            <a href="/admin/users" class="block">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+
+        <div class="bg-blue-600 text-white p-6 rounded-2xl shadow">
+
+            <h2 class="text-4xl font-bold">
+
+                {{ $users }}
+
+            </h2>
+
+            <p class="mt-2">
                 Usuarios
-            </a>
+            </p>
 
-            <a href="/admin/reports" class="block">
-                Reportes
-            </a>
+        </div>
+
+        <div class="bg-green-600 text-white p-6 rounded-2xl shadow">
+
+            <h2 class="text-4xl font-bold">
+
+                {{ $reports }}
+
+            </h2>
+
+            <p class="mt-2">
+                Reportes VIN
+            </p>
+
+        </div>
+
+        <div class="bg-yellow-500 text-white p-6 rounded-2xl shadow">
+
+            <h2 class="text-4xl font-bold">
+
+                {{ $payments }}
+
+            </h2>
+
+            <p class="mt-2">
+                Pagos Premium
+            </p>
+
+        </div>
+
+        <div class="bg-red-500 text-white p-6 rounded-2xl shadow">
+
+            <h2 class="text-4xl font-bold">
+
+                {{ $mechanics }}
+
+            </h2>
+
+            <p class="mt-2">
+                Mecánicos
+            </p>
 
         </div>
 
     </div>
 
-    <div class="md:col-span-3 bg-white p-10 rounded shadow">
+    <!-- GRAFICA -->
 
-        <h1 class="text-4xl font-bold mb-8">
-            Estadísticas Plataforma
-        </h1>
+    <div class="bg-white p-8 rounded-2xl shadow">
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <h2 class="text-3xl font-bold mb-6">
 
-            <div class="bg-blue-100 p-6 rounded">
-                <h2 class="text-4xl font-bold">
-                    {{ $users }}
-                </h2>
+            Estadísticas Plataforma 📊
 
-                <p class="mt-2">
-                    Usuarios
-                </p>
-            </div>
+        </h2>
 
-            <div class="bg-green-100 p-6 rounded">
-                <h2 class="text-4xl font-bold">
-                    {{ $reports }}
-                </h2>
-
-                <p class="mt-2">
-                    Reportes
-                </p>
-            </div>
-
-            <div class="bg-yellow-100 p-6 rounded">
-                <h2 class="text-4xl font-bold">
-                    {{ $payments }}
-                </h2>
-
-                <p class="mt-2">
-                    Pagos
-                </p>
-            </div>
-
-            <div class="bg-red-100 p-6 rounded">
-                <h2 class="text-4xl font-bold">
-                    {{ $mechanics }}
-                </h2>
-
-                <p class="mt-2">
-                    Mecánicos
-                </p>
-            </div>
-
-        </div>
+        <canvas id="statsChart"></canvas>
 
     </div>
 
 </div>
+
+<!-- CHART JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('statsChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+
+            'Usuarios',
+
+            'Reportes',
+
+            'Pagos',
+
+            'Mecánicos'
+
+        ],
+
+        datasets: [{
+
+            label: 'Sistema AutoCheckSV',
+
+            data: [
+
+                {{ $users }},
+
+                {{ $reports }},
+
+                {{ $payments }},
+
+                {{ $mechanics }}
+
+            ],
+
+            borderWidth: 1
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
 
 @endsection

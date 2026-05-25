@@ -30,13 +30,22 @@ class User extends Authenticatable
         ];
     }
 
+    public function payments()
+{
+    return $this->hasMany(\App\Models\Payment::class);
+}
+
     public function vehicleReports()
 {
     return $this->hasMany(VehicleReport::class);
 }
 
-public function payments()
+
+public function mechanicRequests()
 {
-    return $this->hasMany(Payment::class);
+    return $this->hasMany(MechanicRequest::class);
 }
+
+
+
 }

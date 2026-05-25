@@ -19,107 +19,71 @@
 @endif
 
 <div class="bg-white p-8 rounded shadow-md">
-
     <h1 class="text-3xl font-bold mb-6">
-        Buscar Vehículo por VIN
+        Buscar Vehículos por VIN
     </h1>
 
     <form action="{{ route('vin.store') }}" method="POST">
         @csrf
-
-        <input
-            type="text"
-            name="vin"
-            placeholder="Ingrese VIN"
+        <textarea
+            name="vins"
+            placeholder="Ingrese uno o más VINs (separados por coma o salto de línea)"
             class="w-full border rounded px-4 py-2 mb-4"
-        >
+            rows="5"
+        ></textarea>
 
         <button
             type="submit"
             onclick="this.innerHTML='Buscando...';"
             class="bg-blue-600 text-white px-6 py-2 rounded">
-                Buscar
+            Buscar
         </button>
     </form>
-
 </div>
 
 <div class="mt-10">
-
     <h2 class="text-2xl font-bold mb-4">
         Historial de Reportes
     </h2>
 
-    <table class="w-full bg-white rounded shadow">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @forelse($reports as $report)
+            @php
+                $details = json_decode($report->report_result, true);
+                $score = $details['score'] ?? 'N/A';
 
-        <thead class="bg-gray-200">
-    <tr>
-        <th class="p-3 text-left">Vehículo</th>
-        <th class="p-3 text-left">Año</th>
-        <th class="p-3 text-left">Reporte</th>
-        <th class="p-3 text-left">Fecha</th>
-        <th class="p-3 text-left">Acciones</th>
-    </tr>
-        </thead>
+                // Colores dinámicos según el score
+                $scoreColor = 'text-gray-600';
+                if (is_numeric($score)) {
+                    if ($score >= 85) $scoreColor = 'text-green-600';
+                    elseif ($score >= 70) $scoreColor = 'text-yellow-600';
+                    else $scoreColor = 'text-red-600';
+                }
+            @endphp
 
-        <tbody>
-
-            @forelse($reports as $report)
-
-                <tr class="border-b">
-
-                    <td class="p-3">
-                        <strong>{{ $report->vin }}</strong><br>
-                        {{ $report->brand }} {{ $report->model }}
-                    </td>
-
-                    <td class="p-3">
-                        {{ $report->year }}
-                    </td>
-
-                    <td class="p-3">
-                        {{ $report->report_type }}
-                    </td>
-
-                    <td class="p-3">
-                        {{ $report->created_at->format('d/m/Y') }}
-                    </td>
-
-                </tr>
-
-            <td class="p-3">
-
-            <a href="{{ route('vin.show', $report->id) }}"
-                class="bg-blue-500 text-white px-4 py-2 rounded">
-                Ver
-            </a>
-
-</td>
-
-            @empty
-
-                <tr>
-                    <td colspan="4" class="p-3">
-                        <div class="text-center py-10">
-
-    <div class="text-6xl mb-4">
-        🚗
+            <div class="bg-white p-6 rounded shadow hover:shadow-lg transition">
+                <h3 class="text-xl font-bold mb-2">{{ $report->brand }} {{ $report->model }}</h3>
+                <p class="text-gray-600 mb-2"><strong>VIN:</strong> {{ $report->vin }}</p>
+                <p class="text-gray-600 mb-2"><strong>Año:</strong> {{ $report->year }}</p>
+                <p class="text-gray-600 mb-2"><strong>Score:</strong> 
+                    <span class="font-bold {{ $scoreColor }}">{{ $score }}</span>
+                </p>
+                <p class="text-gray-500 text-sm mb-4">
+                    Generado el {{ $report->created_at->format('d/m/Y') }}
+                </p>
+                <a href="{{ route('vin.show', $report->id) }}"
+                   class="bg-blue-500 text-white px-4 py-2 rounded">
+                    Ver Detalle
+                </a>
+            </div>
+        @empty
+            <div class="col-span-3 text-center py-10">
+                <div class="text-6xl mb-4">🚗</div>
+                <p class="text-gray-500 text-xl">Aún no tienes reportes generados</p>
+            </div>
+        @endforelse
     </div>
-
-    <p class="text-gray-500 text-xl">
-        Aún no tienes reportes generados
-    </p>
-
-</div>
-                    </td>
-                </tr>
-
-            @endforelse
-
-        </tbody>
-
-    </table>
-
 </div>
 
 @endsection
+

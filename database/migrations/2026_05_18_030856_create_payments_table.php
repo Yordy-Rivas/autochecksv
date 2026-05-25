@@ -15,18 +15,26 @@ return new class extends Migration
 
     $table->id();
 
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->foreignId('user_id')
+          ->constrained()
+          ->onDelete('cascade');
+
+    $table->string('card_holder');
+
+    $table->string('card_last_digits');
+
+    $table->string('email');
+
+    $table->string('postal_code');
 
     $table->decimal('amount', 10, 2);
 
-    $table->string('payment_method');
-
-    $table->string('transaction_id')->nullable();
-
-    $table->enum('status', ['pending', 'completed', 'failed']);
+    $table->string('status')->default('Procesado');
 
     $table->timestamps();
+
 });
+
     }
 
     /**
